@@ -48,11 +48,8 @@
             {{ formatDateTime(row.created_at) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="100">
           <template #default="{ row }">
-            <el-button size="small" type="primary" @click="goToOverview(row)">
-              患者概览
-            </el-button>
             <el-button size="small" @click="viewScoreTrend(row)">
               评分趋势
             </el-button>
@@ -94,7 +91,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { LineChart } from 'echarts/charts'
@@ -102,8 +98,6 @@ import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/compone
 import VChart from 'vue-echarts'
 import { getRecords, getPatientScoreChanges } from '@/api/records'
 import dayjs from 'dayjs'
-
-const router = useRouter()
 
 use([CanvasRenderer, LineChart, TitleComponent, TooltipComponent, GridComponent])
 
@@ -152,10 +146,6 @@ const resetSearch = () => {
     dateRange: []
   }
   fetchRecords()
-}
-
-const goToOverview = (row) => {
-  router.push(`/patient/${row.patient_id}/overview`)
 }
 
 const viewScoreTrend = async (row) => {

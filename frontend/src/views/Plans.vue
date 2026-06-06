@@ -50,24 +50,14 @@
             {{ formatDateTime(row.created_at) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="280" v-if="!userStore.isAuditor()">
+        <el-table-column label="操作" width="200" v-if="!userStore.isAuditor()">
           <template #default="{ row }">
-            <el-button size="small" type="primary" @click="goToOverview(row)">
-              患者概览
-            </el-button>
             <el-button size="small" @click="handleEdit(row)">编辑</el-button>
             <el-button size="small" type="success" @click="markComplete(row)" v-if="row.status === 'pending'">
               完成
             </el-button>
             <el-button size="small" type="danger" @click="handleDelete(row)" v-if="userStore.isAdmin()">
               删除
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="100" v-else>
-          <template #default="{ row }">
-            <el-button size="small" type="primary" @click="goToOverview(row)">
-              患者概览
             </el-button>
           </template>
         </el-table-column>
@@ -111,13 +101,11 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useUserStore } from '@/store/user'
 import { getPlans, createPlan, updatePlan, deletePlan } from '@/api/plans'
 import dayjs from 'dayjs'
 
-const router = useRouter()
 const userStore = useUserStore()
 
 const plans = ref([])
@@ -182,10 +170,6 @@ const fetchPlans = async () => {
   } finally {
     loading.value = false
   }
-}
-
-const goToOverview = (row) => {
-  router.push(`/patient/${row.patient_id}/overview`)
 }
 
 const resetSearch = () => {
