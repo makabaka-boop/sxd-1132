@@ -79,7 +79,7 @@ def validate_row(row: Dict[str, Any], row_num: int, template: FollowupTemplate, 
             FollowupPlan.status == 'pending'
         ).first()
         if conflicting_plan:
-            existing_records.add(record_key)
+            errors.append("计划冲突: 同一患者同一日期存在待回访计划")
 
     data_fields = {}
     for key, value in row.items():
@@ -160,6 +160,7 @@ def process_upload_file(file_content: bytes, filename: str, template_id: int, us
                     row_data=str(row.to_dict())
                 )
                 db.add(error_record)
+                db.flush()
                 errors.append(ErrorRecordResponse.model_validate(error_record))
         else:
             error_count += 1
@@ -172,6 +173,7 @@ def process_upload_file(file_content: bytes, filename: str, template_id: int, us
                 row_data=str(row.to_dict())
             )
             db.add(error_record)
+            db.flush()
             errors.append(ErrorRecordResponse.model_validate(error_record))
 
     audit_log = AuditLog(

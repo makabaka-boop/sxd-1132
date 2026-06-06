@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 from ..database import get_db
 from ..models import User, ErrorRecord, AuditLog, Alert
@@ -37,13 +37,14 @@ def list_audit_logs(
 
 @router.get("/alerts", response_model=List[AlertResponse])
 def list_alerts(
-    is_read: bool = False,
+    is_read: Optional[bool] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    alerts = db.query(Alert).filter(
-        Alert.is_read == is_read
-    ).order_by(Alert.created_at.desc()).all()
+    query = db.query(Alert)
+    if is_read is not None:
+        query = query.filter(Alert.is_read == is_read)
+    alerts = query.order_by(Alert.created_at.desc()).all()
     return alerts
 
 

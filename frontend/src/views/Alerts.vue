@@ -65,7 +65,7 @@ const formatDateTime = (date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss')
 const fetchAlerts = async () => {
   loading.value = true
   try {
-    const params = filterType.value === 'unread' ? { is_read: false } : {}
+    const params = filterType.value === 'unread' ? { is_read: false } : { is_read: null }
     alerts.value = await getAlerts(params)
   } catch (e) {
     console.error(e)

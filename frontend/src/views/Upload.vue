@@ -67,8 +67,8 @@
         </el-col>
       </el-row>
 
-      <el-tabs v-if="uploadResult.errors.length > 0" style="margin-top: 20px;">
-        <el-tab-pane label="错误详情" name="errors">
+      <el-tabs v-if="uploadResult.errors.length > 0 || uploadResult.success_records.length > 0" style="margin-top: 20px;">
+        <el-tab-pane v-if="uploadResult.errors.length > 0" label="错误详情" name="errors">
           <el-table :data="uploadResult.errors" border stripe>
             <el-table-column prop="row_number" label="行号" width="80" />
             <el-table-column prop="patient_id" label="患者编号" width="120" />

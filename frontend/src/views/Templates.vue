@@ -52,7 +52,7 @@
             v-model="form.fields"
             type="textarea"
             :rows="4"
-            placeholder="JSON格式定义字段，例如：{\"血压\": \"string\", \"心率\": \"number\"}"
+            placeholder='JSON格式定义字段，例如：{"血压": "string", "心率": "number"}'
           />
         </el-form-item>
         <el-row :gutter="20">
