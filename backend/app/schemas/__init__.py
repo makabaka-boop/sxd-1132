@@ -171,3 +171,18 @@ class ScoreTrendItem(BaseModel):
     score: float
     patient_id: str
     patient_name: Optional[str] = None
+
+
+class PatientOverview(BaseModel):
+    patient_id: str
+    patient_name: Optional[str] = None
+    total_records: int
+    latest_score: Optional[float] = None
+    latest_followup_date: Optional[datetime] = None
+    score_trend: List[ScoreTrendItem]
+    recent_records: List[RecordResponse]
+    pending_plans: List[PlanResponse]
+    unread_alerts: List[AlertResponse]
+
+    class Config:
+        from_attributes = True

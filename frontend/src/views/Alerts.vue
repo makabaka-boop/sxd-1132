@@ -33,11 +33,18 @@
             {{ formatDateTime(row.created_at) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="操作" width="200">
           <template #default="{ row }">
             <el-button
               size="small"
               type="primary"
+              @click="goToOverview(row)"
+            >
+              患者概览
+            </el-button>
+            <el-button
+              size="small"
+              type="success"
               @click="markRead(row)"
               v-if="!row.is_read"
             >
@@ -52,9 +59,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { getAlerts, markAlertRead } from '@/api/audit'
 import dayjs from 'dayjs'
+
+const router = useRouter()
 
 const alerts = ref([])
 const loading = ref(false)
@@ -72,6 +82,10 @@ const fetchAlerts = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const goToOverview = (row) => {
+  router.push(`/patient/${row.patient_id}/overview`)
 }
 
 const markRead = async (row) => {
